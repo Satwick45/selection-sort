@@ -1,0 +1,51 @@
+#include <stdio.h>
+
+int main() {
+    int n, i, w;
+    int weight[10], profit[10];
+    int capacity;
+    int dp[10][50];   // dp table
+
+    printf("Enter number of items: ");
+    scanf("%d", &n);
+
+    printf("Enter weights of items:\n");
+    for(i = 1; i <= n; i++) {
+        scanf("%d", &weight[i]);
+    }
+
+    printf("Enter profits of items:\n");
+    for(i = 1; i <= n; i++) {
+        scanf("%d", &profit[i]);
+    }
+
+    printf("Enter capacity of knapsack: ");
+    scanf("%d", &capacity);
+
+    // Initialize first row and column as 0
+    for(i = 0; i <= n; i++)
+        dp[i][0] = 0;
+
+    for(w = 0; w <= capacity; w++)
+        dp[0][w] = 0;
+
+    // Build DP table
+    for(i = 1; i <= n; i++) {
+        for(w = 1; w <= capacity; w++) {
+
+            if(weight[i] <= w) {
+                if(profit[i] + dp[i-1][w-weight[i]] > dp[i-1][w])
+                    dp[i][w] = profit[i] + dp[i-1][w-weight[i]];
+                else
+                    dp[i][w] = dp[i-1][w];
+            }
+            else {
+                dp[i][w] = dp[i-1][w];
+            }
+        }
+    }
+
+    printf("Maximum Profit = %d", dp[n][capacity]);
+
+    return 0;
+}
