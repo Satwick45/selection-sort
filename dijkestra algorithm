@@ -1,0 +1,33 @@
+V = 5
+
+graph = [[0,10,0,5,0],
+         [0,0,1,2,0],
+         [0,0,0,0,4],
+         [0,3,9,0,2],
+         [7,0,6,0,0]]
+
+dist = [999,999,999,999,999]
+visited = [0,0,0,0,0]
+
+dist[0] = 0
+
+for i in range(V):
+    minimum = 999
+    u = 0
+
+    for j in range(V):
+        if visited[j] == 0 and dist[j] < minimum:
+            minimum = dist[j]
+            u = j
+
+    visited[u] = 1
+
+    for v in range(V):
+        if graph[u][v] != 0 and visited[v] == 0:
+            if dist[v] > dist[u] + graph[u][v]:
+                dist[v] = dist[u] + graph[u][v]
+
+print("Vertex  Distance")
+
+for i in range(V):
+    print(i,"      ",dist[i])
