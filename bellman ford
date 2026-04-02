@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+#define INF 99999
+
+int main() {
+    int V, E, i, j;
+
+    printf("Enter number of vertices and edges: ");
+    scanf("%d %d", &V, &E);
+
+    int u[E], v[E], w[E];
+
+    printf("Enter edges (source destination weight):\n");
+    for(i = 0; i < E; i++) {
+        scanf("%d %d %d", &u[i], &v[i], &w[i]);
+    }
+
+    int dist[V];
+    int source;
+
+    printf("Enter source vertex: ");
+    scanf("%d", &source);
+
+    // Initialize distances
+    for(i = 0; i < V; i++)
+        dist[i] = INF;
+
+    dist[source] = 0;
+
+    // Relax edges V-1 times
+    for(i = 1; i <= V-1; i++) {
+        for(j = 0; j < E; j++) {
+            if(dist[u[j]] + w[j] < dist[v[j]]) {
+                dist[v[j]] = dist[u[j]] + w[j];
+            }
+        }
+    }
+
+    // Check for negative cycle
+    for(j = 0; j < E; j++) {
+        if(dist[u[j]] + w[j] < dist[v[j]]) {
+            printf("Negative weight cycle detected!\n");
+            return 0;
+        }
+    }
+
+    // Print result
+    printf("\nShortest distances from source %d:\n", source);
+    for(i = 0; i < V; i++) {
+        printf("To %d = %d\n", i, dist[i]);
+    }
+
+    return 0;
+}
