@@ -1,0 +1,46 @@
+#include <stdio.h>
+#define INF 99999
+
+int n, cost[10][10], visited[10];
+
+// Function to find minimum cost
+int tsp(int city) {
+    int i, min = INF, nextCity;
+
+    visited[city] = 1;
+
+    for(i = 0; i < n; i++) {
+        if(cost[city][i] != 0 && visited[i] == 0) {
+            int temp = cost[city][i] + tsp(i);
+            if(temp < min)
+                min = temp;
+        }
+    }
+
+    // Return to starting city
+    if(min == INF)
+        return cost[city][0];
+
+    return min;
+}
+
+int main() {
+    int i, j;
+
+    printf("Enter number of cities: ");
+    scanf("%d", &n);
+
+    printf("Enter cost matrix:\n");
+    for(i = 0; i < n; i++) {
+        for(j = 0; j < n; j++) {
+            scanf("%d", &cost[i][j]);
+        }
+        visited[i] = 0;
+    }
+
+    int result = tsp(0);
+
+    printf("\nMinimum travelling cost = %d\n", result);
+
+    return 0;
+}
